@@ -31,8 +31,8 @@ public class Main {
                 if (stack.isEmpty()) {
                     System.out.println(index);
                     success = false;
+                    break;
                 }
-
                 if (success) {
                     char top = stack.pop();
                     if (((top == '(') && (ch != ')')) ||
@@ -41,12 +41,12 @@ public class Main {
                     {
                         System.out.println(index);
                         success = false;
+                        break;
                     }
                     else {
                         stackIndexOpen.pop();
                     }
                 }
-
             }
         }
 
