@@ -10,17 +10,51 @@ public class Main {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String input = reader.readLine();
         char[] inputCharArray = input.toCharArray();
-        int sizeInput = inputCharArray.length;
+        int index = 0;
+        boolean success = true;
 
         Stack<Character> stack = new Stack<>();
+        Stack<Integer> stackIndexOpen = new Stack<>();
 
-        for (Character ch : inputCharArray) {
-            stack.push(ch);
+        for (char ch : inputCharArray) {
+            index++;
+            if ((ch != '(') && (ch != ')') &&
+                (ch != '[') && (ch != ']') &&
+                (ch != '{') && ch != '}')
+                continue;
+
+            if ((ch == '(') || (ch == '[') || (ch == '{')) {
+                stack.push(ch);
+                stackIndexOpen.push(index);
+            }
+            else {
+                if (stack.isEmpty()) {
+                    System.out.println(index);
+                    success = false;
+                }
+
+                if (success) {
+                    char top = stack.pop();
+                    if (((top == '(') && (ch != ')')) ||
+                            ((top == '[') && (ch != ']')) ||
+                            ((top == '{') && (ch != '}')))
+                    {
+                        System.out.println(index);
+                        success = false;
+                    }
+                    else {
+                        stackIndexOpen.pop();
+                    }
+                }
+
+            }
         }
 
-
-        for (int i = 0; i < sizeInput; i++) {
-            System.out.println(stack.pop());
+        if (success) {
+            if (stack.isEmpty())
+                System.out.println("Success");
+            else
+                System.out.println(stackIndexOpen.pop());
         }
     }
 }
