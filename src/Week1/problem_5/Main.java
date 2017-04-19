@@ -43,7 +43,7 @@ class StackMax {
     }
 }
 
-class QueueStackMax {  //очередь на основе стеков с поддержкой максимума
+class QueueStackMax {  //очередь на основе стеков с поддержкой максимумаg
     private StackMax stackLeft;
     private StackMax stackRight;
 
@@ -53,19 +53,45 @@ class QueueStackMax {  //очередь на основе стеков с под
     }
 
     public void pushBack(Integer i) {
+        stackLeft.push(i);
+    }
 
+    //переписываем все элементы из левого стека в правый
+    private void rewriteFromLeftStackToRight() {
+        while (!stackLeft.isEmpty()) {
+            stackRight.push(stackLeft.pop());
+        }
     }
 
     public Integer popFront() {
-        return 0;
+        if (!stackRight.isEmpty()) {
+            return stackRight.pop();
+        } else {
+            rewriteFromLeftStackToRight();
+            return stackRight.pop();
+        }
     }
 
     public boolean isEmpty() {
-        return false;
+        return (stackLeft.isEmpty() && stackRight.isEmpty());
     }
 
     public int size() {
-        return 0;
+        return (stackLeft.size() + stackRight.size());
+    }
+
+    public int max() {
+        if (stackLeft.isEmpty())
+            return stackRight.max();
+        else if (stackRight.isEmpty())
+            return stackLeft.max();
+        else {
+            return max(stackLeft.max(), stackRight.max());
+        }
+    }
+
+    private int max(int a, int b) {
+        return a >= b ? a : b;
     }
 }
 
@@ -88,6 +114,27 @@ public class Main {
         String s3 = sc.nextLine();
         int m = Integer.parseInt(s3);
 
+        int[] maxArr = new int[n - m + 1];
 
+        QueueStackMax queue = new QueueStackMax();
+
+        for (int i = 0; i < m; i++) {
+            queue.pushBack(A[i]);
+        }
+        maxArr[0] = queue.max();
+
+        for (int i = m; i < n; i++) {
+            queue.popFront();
+            queue.pushBack(A[i]);
+            maxArr[i - m + 1] = queue.max();
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n - m; i++) {
+            sb.append(maxArr[i]).append(" ");
+        }
+        sb.append(maxArr[n - m]);
+
+        System.out.println(sb.toString());
     }
 }
