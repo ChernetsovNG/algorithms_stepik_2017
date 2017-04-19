@@ -48,33 +48,50 @@ public class Main {
         boolean isRun = false;     //работает ли (true) или простаивает компьютер
 
         while (numHandlingPacket < n) {
+
             //1. добавляем пакеты в буфер
-            while (packets[numHandlingPacket].arrival <= time) {
-                if (packets[numHandlingPacket].arrival == time) {
-                    if (buffer.size() < size)
-                        buffer.offer(packets[numHandlingPacket]);
+            while (packets[numHandlingPacket].arrival == time) {
+                if (buffer.size() < size) {
+                    //если буфер пустой, и приходит пакет с нулевой длительностью обработки, и при этом компьютер свободен,
+                    //то его сразу же обрабатываем
+                    if ((buffer.size() == 0) && (packets[numHandlingPacket].duration == 0) && (!isRun)) {
+                        packets[numHandlingPacket].timeStart = time;
+                        numHandlingPacket++;
+                        if (numHandlingPacket < n)
+                            continue;
+                        else
+                            break;
+                    }
+                    buffer.offer(packets[numHandlingPacket]);
                 } else {
                     packets[numHandlingPacket].timeStart = -1;  //пакет не влезает в буфер - отбрасываем
                 }
                 numHandlingPacket++;
+                if (numHandlingPacket < n)
+                    continue;
+                else
+                    break;
             }
 
             //2. Те пакеты, что компьютер обработал, больше не рассматриваем
             if (isRun) {
                 if (RunningPacket.timeStart + RunningPacket.duration == time) {
                     //закончили обработку пакета, и готовы взять следующий из буфера
+                    buffer.poll();  //удаляем пакет из буфера
                     isRun = false;
                 }
             }
 
             //3. Работа компьютера
-            if (!isRun) {
+            while (!isRun) {
                 if (buffer.size() > 0) {  //если буфер не пустой
-                    RunningPacket = buffer.poll();  //берём пакет из буфера
+                    RunningPacket = buffer.peek();  //берём пакет из буфера, но пока не удаляем
                     RunningPacket.timeStart = time;
                     isRun = true;
                 } else {
                     isRun = false;  //ждём появления пакета в буфере
+                    RunningPacket = null;
+                    break;
                 }
             }
 
