@@ -6,13 +6,13 @@ class Pair {
     long n1;
     long n2;
 
-    public Pair(long n1, long n2) {
+    Pair(long n1, long n2) {
         this.n1 = n1;
         this.n2 = n2;
     }
 
     //сравниваем сперва по n2, потом по n1
-    public int compareTo(Pair another) {
+    int compareTo(Pair another) {
         if (this.n2 < another.n2) {
             return -1;
         }
@@ -39,7 +39,7 @@ class MinHeap {
     private int maxSize;
 
     //создаём пустую кучу
-    public MinHeap(int maxSize) {
+    MinHeap(int maxSize) {
         H = new Pair[maxSize];
 
         this.size = 0;
@@ -65,7 +65,7 @@ class MinHeap {
     }
 
     //всплытие элемента
-    public void siftUp(int i) {
+    private void siftUp(int i) {
         while ((i > 0) && (H[parent(i)].compareTo(H[i]) > 0)) {
             swap(parent(i), i);
             i = parent(i);
@@ -73,7 +73,7 @@ class MinHeap {
     }
 
     //утапливание элемента
-    public void siftDown(int i) {
+    private void siftDown(int i) {
         int minIndex = i;
 
         int l = leftChild(i);
@@ -92,7 +92,7 @@ class MinHeap {
         }
     }
 
-    public void insert(Pair p) {
+    void insert(Pair p) {
         if (size == maxSize) {
             throw new IndexOutOfBoundsException();
         }
@@ -101,7 +101,7 @@ class MinHeap {
         size++;
     }
 
-    public Pair extractMin() {
+    Pair extractMin() {
         Pair result = H[0];
         H[0] = H[size-1];
         size--;
@@ -126,7 +126,7 @@ class MinHeap {
         }
     }
 
-    public boolean isFull() {
+    boolean isFull() {
         return (size == maxSize);
     }
 
