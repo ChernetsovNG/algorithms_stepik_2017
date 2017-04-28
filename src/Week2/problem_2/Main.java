@@ -3,10 +3,10 @@ package Week2.problem_2;
 import java.util.Scanner;
 
 class Pair {
-    int n1;
-    int n2;
+    long n1;
+    long n2;
 
-    public Pair(int n1, int n2) {
+    public Pair(long n1, long n2) {
         this.n1 = n1;
         this.n2 = n2;
     }
@@ -169,11 +169,11 @@ public class Main {
 
         String[] s2Arr = s2.split(" ");
 
-        int[] t = new int[m];
+        long[] t = new long[m];
         Pair[] result = new Pair[m];
 
         for (int i = 0; i < m; i++) {
-            t[i] = Integer.parseInt(s2Arr[i]);
+            t[i] = Long.parseLong(s2Arr[i]);
         }
 
         MinHeap minHeap = new MinHeap(n);  //куча размером n
