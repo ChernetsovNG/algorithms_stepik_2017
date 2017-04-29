@@ -9,15 +9,20 @@ class DisjointSet {
     public int[] rank;
     public int[] tablesSize;
     public int maxTableSize = 0;
+    public int maxTableId = 0;
 
-    public DisjointSet(int size, int[] talsesSize) {
+    public DisjointSet(int size, int[] tablesSize) {
         parent = new int[size];
         rank = new int[size];
-        this.tablesSize = talsesSize;
+        this.tablesSize = tablesSize;
 
         for (int i = 0; i < size; i++) {
             parent[i] = i;
             rank[i] = 0;
+            if (tablesSize[i] > maxTableSize) {
+                maxTableSize = tablesSize[i];
+                maxTableId = i;
+            }
         }
     }
 
@@ -36,16 +41,18 @@ class DisjointSet {
         if (i_id == j_id) {
             return;
         }
+
         if (rank[i_id] > rank[j_id]) {
             parent[j_id] = i_id;
+
             tablesSize[i_id] = tablesSize[i_id] + tablesSize[j_id];
             tablesSize[j_id] = 0;
-            maxTableSize = tablesSize[i_id];
         } else {
             parent[i_id] = j_id;
+
             tablesSize[j_id] = tablesSize[i_id] + tablesSize[j_id];
             tablesSize[i_id] = 0;
-            maxTableSize = tablesSize[j_id];
+
             if (rank[i_id] == rank[j_id]) {
                 int k = rank[j_id];
                 rank[j_id] = k+1;
