@@ -27,11 +27,10 @@ class DisjointSet {
     }
 
     public int find(int i) {
-        int j = i;
-        while (j != parent[j]) {
-            j = parent[j];
+        if (i != parent[i]) {
+            parent[i] = find(parent[i]);
         }
-        return j;
+        return parent[i];
     }
 
     public void union(int i, int j) {
@@ -47,11 +46,19 @@ class DisjointSet {
 
             tablesSize[i_id] = tablesSize[i_id] + tablesSize[j_id];
             tablesSize[j_id] = 0;
+
+            if (tablesSize[i_id] > maxTableSize) {
+                maxTableSize = tablesSize[i_id];
+            }
         } else {
             parent[i_id] = j_id;
 
             tablesSize[j_id] = tablesSize[i_id] + tablesSize[j_id];
             tablesSize[i_id] = 0;
+
+            if (tablesSize[j_id] > maxTableSize) {
+                maxTableSize = tablesSize[j_id];
+            }
 
             if (rank[i_id] == rank[j_id]) {
                 int k = rank[j_id];
@@ -84,8 +91,6 @@ public class Main {
         int[] dest = new int[m];
         int[] src = new int[m];
 
-        int[] maxTableSize = new int[m];
-
         for (int i = 0; i < m; i++) {
             String s3 = sc.nextLine();
             String[] s3Arr = s3.split(" ");
@@ -99,11 +104,7 @@ public class Main {
 
         for (int i = 0; i < m; i++) {
             set.union(dest[i], src[i]);
-            maxTableSize[i] = set.maxTableSize;
-        }
-
-        for (int i = 0; i < m; i++) {
-            System.out.println(maxTableSize[i]);
+            System.out.println(set.maxTableSize);
         }
 
     }
