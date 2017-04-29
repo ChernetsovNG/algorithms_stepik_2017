@@ -22,10 +22,11 @@ class DisjointSet {
     }
 
     public int find(int i) {
-        if (i != parent[i]) {
-            parent[i] = find(parent[i]);
+        int j = i;
+        while (j != parent[j]) {
+            j = parent[j];
         }
-        return parent[i];
+        return j;
     }
 
     public void union(int i, int j) {
@@ -37,12 +38,14 @@ class DisjointSet {
         }
         if (rank[i_id] > rank[j_id]) {
             parent[j_id] = i_id;
-            tablesSize[i] = tablesSize[i] + tablesSize[j];
-            tablesSize[j] = 0;
+            tablesSize[i_id] = tablesSize[i_id] + tablesSize[j_id];
+            tablesSize[j_id] = 0;
+            maxTableSize = tablesSize[i_id];
         } else {
             parent[i_id] = j_id;
-            tablesSize[j] = tablesSize[i] + tablesSize[j];
-            tablesSize[i] = 0;
+            tablesSize[j_id] = tablesSize[i_id] + tablesSize[j_id];
+            tablesSize[i_id] = 0;
+            maxTableSize = tablesSize[j_id];
             if (rank[i_id] == rank[j_id]) {
                 int k = rank[j_id];
                 rank[j_id] = k+1;
@@ -88,12 +91,12 @@ public class Main {
         DisjointSet set = new DisjointSet(n, r);
 
         for (int i = 0; i < m; i++) {
-            set.union(src[i], dest[i]);
-            maxTableSize[i] = 0;
+            set.union(dest[i], src[i]);
+            maxTableSize[i] = set.maxTableSize;
         }
 
-        for (int i = 0; i < n; i++) {
-            System.out.println(set.tablesSize[i]);
+        for (int i = 0; i < m; i++) {
+            System.out.println(maxTableSize[i]);
         }
 
     }
