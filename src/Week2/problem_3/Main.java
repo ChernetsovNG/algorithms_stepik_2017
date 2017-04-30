@@ -95,6 +95,7 @@ public class Main {
         int src;
         String s3;
         String[] s3Arr;
+        StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < m; i++) {
             s3 = sc.nextLine();
@@ -104,8 +105,10 @@ public class Main {
             src = Integer.parseInt(s3Arr[1])-1;
 
             set.union(dest, src);
-            System.out.println(set.maxTableSize);
+            sb.append(set.maxTableSize).append("\n");
         }
+
+        System.out.println(sb.toString());
 
     }
 }
