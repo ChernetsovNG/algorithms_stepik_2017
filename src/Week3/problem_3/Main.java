@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 //Реализация алгоритма Рабина-Карпа
 public class Main {
-    private static final int p = 1_000_000_007;  //простое число
-    private static final int x = 263;  //основание хеш-фукнции
+    private static final int p = 1_000_001;  //простое число
+    private static final int x = 30;  //основание хеш-фукнции
 
     //вычисляет (base^exp) % mod
     private static long pow(int base, int exp, int mod) {
@@ -75,6 +75,7 @@ public class Main {
 
                 long hash_i = hashWindow[i - P + 2];
                 hash_i -= ((charIP % p) * x_pow[P - 1]) % p;
+                hash_i = (hash_i + p) % p;
                 hash_i = ((hash_i % p) * (x % p)) % p;
                 hash_i = ((hash_i % p) + (charI % p)) % p;
 
