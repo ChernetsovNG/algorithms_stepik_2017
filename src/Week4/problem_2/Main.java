@@ -3,15 +3,12 @@ package Week4.problem_2;
 import java.util.Scanner;
 
 class BinaryTree {
-    private int index;
-
     int key;
 
     int left;
     int right;
 
-    BinaryTree(int index, int key, int left, int right) {
-        this.index = index;
+    BinaryTree(int key, int left, int right) {
         this.key = key;
         this.left = left;
         this.right = right;
@@ -71,7 +68,7 @@ public class Main {
                 left = Integer.parseInt(sArr[1]);
                 right = Integer.parseInt(sArr[2]);
 
-                trees[i] = new BinaryTree(i, key, left, right);
+                trees[i] = new BinaryTree(key, left, right);
             }
 
             if (isCorrectSearchTree(trees[0]))
